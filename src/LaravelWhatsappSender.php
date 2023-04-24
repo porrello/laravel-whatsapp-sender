@@ -193,6 +193,7 @@ class LaravelWhatsappSender
             ]
         ];
 
+
         $curl = curl_init();
         curl_setopt_array(
             $curl,
@@ -457,7 +458,9 @@ class LaravelWhatsappSender
         return $responseObj;
     }
 
-    public function sendTemplateMessage($phone, $templateName, $languageCode, $components)
+
+
+    public function sendTextTemplateMessage($phone, $templateName, $languageCode, $text)
     {
         $options = [
             "messaging_product" => "whatsapp",
@@ -469,7 +472,17 @@ class LaravelWhatsappSender
                 "language" => [
                     "code" => $languageCode
                 ],
-                "components" => $components
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $text
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ];
 
@@ -499,14 +512,8 @@ class LaravelWhatsappSender
         return $responseObj;
     }
 
-    /**
-     * Uploads media to WhatsApp using the Graph API.
-     *
-     * @param string $phone The phone number in E.164 format.
-     * @param string $filePath The path to the file to be uploaded.
-     * @param string $mimeType The MIME type of the file to be uploaded.
-     * @return mixed The response from the API, parsed as a JSON object.
-     */
+
+
     /**
      * Uploads media to WhatsApp using the Graph API.
      *
