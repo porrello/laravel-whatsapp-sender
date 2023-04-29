@@ -7,6 +7,15 @@ use CURLFile;
 class LaravelWhatsappSender
 {
 
+    protected $phoneNumberId;
+    protected $token;
+
+    public function __construct($phoneNumberId = null, $token = null)
+    {
+        $this->phoneNumberId = $phoneNumberId ?: env('WHATSAPP_PHONE_NUMBER_ID');
+        $this->token = $token ?: env('WHATSAPP_TOKEN');
+    }
+
     /**
      * Send a WhatsApp text message to a phone number
      *
@@ -20,7 +29,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -40,7 +49,7 @@ class LaravelWhatsappSender
             }',
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -91,7 +100,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -102,7 +111,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -128,7 +137,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -153,7 +162,7 @@ class LaravelWhatsappSender
             }',
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -198,7 +207,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v14.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -209,7 +218,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -245,7 +254,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -256,7 +265,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -273,7 +282,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -295,7 +304,7 @@ class LaravelWhatsappSender
                 }',
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -311,7 +320,7 @@ class LaravelWhatsappSender
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://graph.facebook.com/v16.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages",
+            CURLOPT_URL => "https://graph.facebook.com/v16.0/" . $this->phoneNumberId . "/messages",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -331,7 +340,7 @@ class LaravelWhatsappSender
         }',
             CURLOPT_HTTPHEADER => array(
                 "Content-Type: application/json",
-                "Authorization: Bearer " . env('WHATSAPP_TOKEN')
+                "Authorization: Bearer " . $this->token
             ),
         ));
 
@@ -351,7 +360,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -370,7 +379,7 @@ class LaravelWhatsappSender
             }',
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -400,7 +409,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -411,7 +420,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -436,7 +445,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -447,7 +456,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -490,7 +499,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/messages',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/messages',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -501,7 +510,7 @@ class LaravelWhatsappSender
                 CURLOPT_POSTFIELDS => json_encode($options),
                 CURLOPT_HTTPHEADER => array(
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
@@ -529,7 +538,7 @@ class LaravelWhatsappSender
         curl_setopt_array(
             $curl,
             array(
-                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . env('WHATSAPP_PHONE_NUMBER_ID') . '/media',
+                CURLOPT_URL => 'https://graph.facebook.com/v16.0/' . $this->phoneNumberId . '/media',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -543,7 +552,7 @@ class LaravelWhatsappSender
                     'messaging_product' => 'whatsapp'
                 ),
                 CURLOPT_HTTPHEADER => array(
-                    'Authorization: Bearer ' . env('WHATSAPP_TOKEN')
+                    'Authorization: Bearer ' . $this->token
                 ),
             )
         );
