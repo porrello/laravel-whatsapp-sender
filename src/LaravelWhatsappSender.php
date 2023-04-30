@@ -87,7 +87,7 @@ class LaravelWhatsappSender
                     "text" => $message,
                 ],
                 "footer" => [
-                    "text" => "Venco Tickets"
+                    "text" => " "
                 ],
                 "action" => [
                     "button" => $viewButtonlabel,
