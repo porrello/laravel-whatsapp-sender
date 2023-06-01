@@ -16,6 +16,36 @@ class LaravelWhatsappSender
         $this->token = $token ?: env('WHATSAPP_TOKEN');
     }
 
+
+    public function getMediaInfo($mediaId, $accessToken)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_URL => 'https://graph.facebook.com/v17.0/' . $mediaId . '/',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . $accessToken
+                ),
+            )
+        );
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return json_decode($response);
+    }
+
+
     /**
      * Send a WhatsApp text message to a phone number
      *
