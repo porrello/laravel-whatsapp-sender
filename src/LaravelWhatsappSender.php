@@ -16,6 +16,34 @@ class LaravelWhatsappSender
         $this->token = $token ?: env('WHATSAPP_TOKEN');
     }
 
+    public function downloadMedia($mediaUrl, $accessToken, $outputFilePath)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_URL => $mediaUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . $accessToken
+                ),
+            )
+        );
+
+        $response = curl_exec($curl);
+
+        if (curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
+            file_put_contents($outputFilePath, $response);
+            return true;
+        } else {
+            return false;
+        }
+
+        curl_close($curl);
+    }
 
     public function getMediaInfo($mediaId, $accessToken)
     {
