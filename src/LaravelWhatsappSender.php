@@ -37,7 +37,7 @@ class LaravelWhatsappSender
 
         if (curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
             file_put_contents($outputFilePath, $response);
-            return true;
+            return $response;
         } else {
             return false;
         }
