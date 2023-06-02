@@ -4,6 +4,7 @@ namespace Dogfromthemoon\LaravelWhatsappSender;
 
 use CURLFile;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
 
 class LaravelWhatsappSender
 {
@@ -17,20 +18,27 @@ class LaravelWhatsappSender
         $this->token = $token ?: env('WHATSAPP_TOKEN');
     }
 
-    public function downloadMedia($mediaUrl, $accessToken, $filePath, $fileName)
+    public function downloadMedia($mediaInfo, $accessToken, $folderName = null)
     {
+        $mediaUrl = $mediaInfo->url;
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
         ])->get($mediaUrl);
 
-        if ($response->successful()) {
-            $fullPath = $filePath . '/' . $fileName;
-            file_put_contents($fullPath, $response->body());
+        $mime_type = $mediaInfo->mime_type;
+        $extension = explode('/', $mime_type)[1];
+        $fileName = $mediaInfo->id . '.' . $extension;
+        $folderPath = public_path($folderName);
+        $filePath = $folderPath . '/' . $fileName;
 
-            return $fullPath;
-        } else {
-            return false;
+        // Create the folder if it doesn't exist
+        if (!File::isDirectory($folderPath)) {
+            File::makeDirectory($folderPath, 0755, true);
         }
+
+        file_put_contents($filePath, $response->body());
+        $publicUrl = asset($folderName . '/' . $fileName);
+        return $publicUrl;
     }
 
     public function getMediaInfo($mediaId, $accessToken)
