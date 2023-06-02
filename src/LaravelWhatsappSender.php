@@ -3,6 +3,7 @@
 namespace Dogfromthemoon\LaravelWhatsappSender;
 
 use CURLFile;
+use Illuminate\Support\Facades\Http;
 
 class LaravelWhatsappSender
 {
@@ -16,33 +17,20 @@ class LaravelWhatsappSender
         $this->token = $token ?: env('WHATSAPP_TOKEN');
     }
 
-    public function downloadMedia($mediaUrl, $accessToken, $outputFilePath)
+    public function downloadMedia($mediaUrl, $accessToken, $filePath, $fileName)
     {
-        $curl = curl_init();
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->get($mediaUrl);
 
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => $mediaUrl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTPHEADER => array(
-                    'Authorization: Bearer ' . $accessToken
-                ),
-            )
-        );
+        if ($response->successful()) {
+            $fullPath = $filePath . '/' . $fileName;
+            file_put_contents($fullPath, $response->body());
 
-        $response = curl_exec($curl);
-
-        if (curl_getinfo($curl, CURLINFO_HTTP_CODE) === 200) {
-            file_put_contents($outputFilePath, $response);
-            return $response;
+            return $fullPath;
         } else {
             return false;
         }
-
-        curl_close($curl);
     }
 
     public function getMediaInfo($mediaId, $accessToken)
@@ -72,30 +60,6 @@ class LaravelWhatsappSender
 
         return json_decode($response);
     }
-
-    public function getMediaDownloadUrl($mediaUrl, $accessToken)
-    {
-        $curl = curl_init($mediaUrl);
-
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $accessToken
-            )
-        ));
-
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        curl_close($curl);
-
-        if ($httpCode === 200) {
-            return $response;
-        } else {
-            return false;
-        }
-    }
-
 
     /**
      * Send a WhatsApp text message to a phone number
