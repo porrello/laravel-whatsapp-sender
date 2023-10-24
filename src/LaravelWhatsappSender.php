@@ -524,6 +524,26 @@ class LaravelWhatsappSender
 
     public function sendTextTemplateMessage($phone, $templateName, $languageCode, $text)
     {
+        // Ensure $text is an array
+        if (!is_array($text)) {
+            return (object) [
+                'error' => [
+                    'message' => 'Text parameter should be an array'
+                ]
+            ];
+        }
+
+        // Construct the parameters for the template components
+        $parameters = [];
+        foreach ($text as $value) {
+            if (!empty(trim($value))) {  // Check if the value is not empty
+                $parameters[] = [
+                    "type" => "text",
+                    "text" => $value
+                ];
+            }
+        }
+
         $options = [
             "messaging_product" => "whatsapp",
             "recipient_type" => "individual",
@@ -533,20 +553,20 @@ class LaravelWhatsappSender
                 "name" => $templateName,
                 "language" => [
                     "code" => $languageCode
-                ],
-                "components" => [
-                    [
-                        "type" => "body",
-                        "parameters" => [
-                            [
-                                "type" => "text",
-                                "text" => $text
-                            ]
-                        ]
-                    ]
                 ]
             ]
         ];
+
+        // Add parameters to the components if it's not empty
+        if (!empty($parameters)) {
+            $options["template"]["components"] = [
+                [
+                    "type" => "body",
+                    "parameters" => $parameters
+                ]
+            ];
+        }
+
 
         $curl = curl_init();
         curl_setopt_array(
