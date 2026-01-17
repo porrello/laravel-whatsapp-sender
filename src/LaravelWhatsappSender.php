@@ -14,8 +14,22 @@ class LaravelWhatsappSender
 
     public function __construct($phoneNumberId = null, $token = null)
     {
-        $this->phoneNumberId = $phoneNumberId ?: env('WHATSAPP_PHONE_NUMBER_ID');
-        $this->token = $token ?: env('WHATSAPP_TOKEN');
+        // Prefer config values (Laravel best-practice) while keeping env fallbacks for direct usage.
+        $this->phoneNumberId = $phoneNumberId ?: (function () {
+            if (function_exists('config')) {
+                return config('laravel-whatsapp-sender.phone_number_id') ?: env('WHATSAPP_PHONE_NUMBER_ID');
+            }
+
+            return env('WHATSAPP_PHONE_NUMBER_ID');
+        })();
+
+        $this->token = $token ?: (function () {
+            if (function_exists('config')) {
+                return config('laravel-whatsapp-sender.token') ?: env('WHATSAPP_TOKEN');
+            }
+
+            return env('WHATSAPP_TOKEN');
+        })();
     }
 
     public function downloadMedia($mediaInfo, $accessToken, $folderName = null)
@@ -134,7 +148,9 @@ class LaravelWhatsappSender
                 "type" => "list",
                 "header" => [
                     "type" => "text",
-                    "text" => env('APP_NAME')
+                    "text" => function_exists('config')
+                        ? (config('laravel-whatsapp-sender.header_text') ?: config('app.name'))
+                        : env('WHATSAPP_HEADER_TEXT', env('APP_NAME'))
                 ],
                 "body" => [
                     "text" => $message,

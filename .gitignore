@@ -1,1 +1,8 @@
 /.DS_Store
+/vendor/
+/.phpunit.result.cache
+/.phpunit.cache/
+/coverage/
+
+# Libraries typically do not commit composer.lock (apps do).
+/composer.lock
