@@ -6,6 +6,11 @@
 
 Laravel WhatsApp Sender is a package for sending WhatsApp messages from Laravel.
 
+## Requirements
+
+- PHP 8.2+
+- Laravel 11.x / 12.x
+
 ## Installation
 
 You can install the package via composer:
@@ -176,7 +181,7 @@ $phone = '1234567890';
 $messageId = '12345';
 // The text of the reply message
 $reply = 'This is my reply to your message!';
-$response = $whatsappSender->replyToMessage($phone, $messageId, $reply);
+$response = $whatsappSender->sendReplyToMessage($phone, $messageId, $reply);
 ```
 
 ### Reaction Messages
@@ -280,7 +285,7 @@ $response = $whatsappSender->sendContactsMessage($phone, $contacts);
 $phone = '1234567890'; // Phone number in E.164 format
 $templateName = 'sample_shipping_confirmation';
 $languageCode = 'en_US';
-$text = '7 to 15';
+$text = ['7 to 15'];
 $response = $whatsappSender->sendTextTemplateMessage($phone, $templateName, $languageCode, $text);
 ```
 
